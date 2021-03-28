@@ -1,13 +1,8 @@
-const validator = require("validator");
 const chalk = require("chalk");
 const yargs = require("yargs");
-const notesUtilities = require("./notes.js");
 const notes = require("./notes.js");
 
-// const myNotes = getNotes();
-// console.log(myNotes);
-// console.log(process.argv);
-
+//customise yargs version
 yargs.version("1.1.0");
 
 //Creating add command
@@ -26,8 +21,8 @@ yargs.command({
       type: "string",
     },
   },
-  handler: function (argv) {
-    notesUtilities.addNote(argv.title, argv.body);
+  handler(argv) {
+    notes.addNote(argv.title, argv.body);
   },
 });
 
@@ -42,8 +37,8 @@ yargs.command({
       type: "string",
     },
   },
-  handler: function (argv) {
-    notesUtilities.removeNote(argv.title);
+  handler(argv) {
+    notes.removeNote(argv.title);
   },
 });
 
@@ -51,8 +46,8 @@ yargs.command({
 yargs.command({
   command: "list",
   describe: "List's the notes",
-  handler: function () {
-    console.log("Listing the quotes");
+  handler() {
+    notes.listNotes();
   },
 });
 
@@ -60,10 +55,18 @@ yargs.command({
 yargs.command({
   command: "read",
   describe: "read's the notes",
-  handler: function () {
-    console.log("Read's up the notes");
+  builder: {
+    title: {
+      describe: "Title of Note to be searched",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler(argv) {
+    notes.readNote(argv.title);
   },
 });
 
+//setting up yargs by explicitly calling it
 yargs.parse();
 // console.log(yargs.argv);
